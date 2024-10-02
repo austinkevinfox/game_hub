@@ -14,6 +14,7 @@ export interface GameQuery {
 
 function App() {
     const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+    const [sortOrder, setSortOrder] = useState<string>("");
 
     return (
         <Grid
@@ -47,10 +48,13 @@ function App() {
                             setGameQuery({ ...gameQuery, platform })
                         }
                     />
-                    <SortSelector />
+                    <SortSelector
+                        sortOrder={sortOrder}
+                        onSelectSortOrder={(value) => setSortOrder(value)}
+                    />
                 </HStack>
 
-                <GameGrid gameQuery={gameQuery} />
+                <GameGrid gameQuery={gameQuery} sortOrder={sortOrder} />
             </GridItem>
         </Grid>
     );
