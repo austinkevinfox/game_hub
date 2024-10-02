@@ -18,6 +18,7 @@ const useGames = (gameQuery: GameQuery) =>
             params: {
                 genres: gameQuery.genre,
                 parent_platforms: gameQuery.platform?.id,
+                search: gameQuery.searchText,
             },
         },
         [gameQuery]
