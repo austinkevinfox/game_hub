@@ -16,9 +16,12 @@ declare type SortType = keyof Game;
 const GameGrid = ({ gameQuery, sortOrder }: Props) => {
     const { data, error, isLoading } = useGames(gameQuery);
     const [sortedData, setSortedData] = useState<Game[]>([]);
-    const skeletons = [1, 2, 3, 4, 5, 6];
+    const [isDataLoading, setIsDataLoading] = useState(false);
+    const skeletons =
+        data?.length > 0 ? new Array(data.length).keys() : [1, 2, 3, 4, 5, 6];
 
     useEffect(() => {
+        setIsDataLoading(true);
         let tmpSortedData = [...data];
         if (sortOrder) {
             const comparator = (a: Game, b: Game): number => {
@@ -44,13 +47,18 @@ const GameGrid = ({ gameQuery, sortOrder }: Props) => {
             tmpSortedData.sort(comparator);
         }
         setSortedData(tmpSortedData);
+        setIsDataLoading(false);
     }, [data, sortOrder]);
+
+    useEffect(() => {
+        setIsDataLoading(true);
+    }, [gameQuery]);
 
     return (
         <>
             {error && <Text>{error}</Text>}
             <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
-                {isLoading &&
+                {isDataLoading &&
                     skeletons.map((skeleton) => (
                         <GameCardContainer key={skeleton}>
                             <GameCardSkeleton />
