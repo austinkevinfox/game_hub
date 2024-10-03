@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Heading,
     HStack,
     Image,
     List,
@@ -23,33 +24,45 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
     if (error) return null;
 
     return (
-        <List>
-            {data.map((genre) => (
-                <ListItem key={genre.id} paddingY="5px">
-                    <HStack>
-                        <Image
-                            boxSize="32px"
-                            borderRadius={8}
-                            src={getCroppedImageUrl(genre.image_background)}
-                        />
-                        <Button
-                            onClick={() => onSelectGenre(genre)}
-                            w="100px"
-                            fontSize="lg"
-                            fontWeight={
-                                genre.id === selectedGenre?.id ? "bold" : "normal"
-                            }
-                            colorScheme={
-                                genre.id === selectedGenre?.id ? "green" : "white"
-                            }
-                            variant="link"
-                        >
-                            <Box w="50%">{genre.name}</Box>
-                        </Button>
-                    </HStack>
-                </ListItem>
-            ))}
-        </List>
+        <>
+            <Heading fontSize="2xl" marginBottom={5}>
+                Genres
+            </Heading>
+            <List>
+                {data.map((genre) => (
+                    <ListItem key={genre.id} paddingY="5px">
+                        <HStack>
+                            <Image
+                                boxSize="32px"
+                                borderRadius={8}
+                                objectFit="cover"
+                                src={getCroppedImageUrl(genre.image_background)}
+                            />
+                            <Button
+                                onClick={() => onSelectGenre(genre)}
+                                w="100px"
+                                fontSize="lg"
+                                fontWeight={
+                                    genre.id === selectedGenre?.id
+                                        ? "bold"
+                                        : "normal"
+                                }
+                                colorScheme={
+                                    genre.id === selectedGenre?.id
+                                        ? "green"
+                                        : "white"
+                                }
+                                variant="link"
+                            >
+                                <Box w="100%" whiteSpace="wrap">
+                                    {genre.name}
+                                </Box>
+                            </Button>
+                        </HStack>
+                    </ListItem>
+                ))}
+            </List>
+        </>
     );
 };
 
