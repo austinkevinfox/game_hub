@@ -17,8 +17,8 @@ const GameGrid = ({ gameQuery, sortOrder }: Props) => {
     const { data, error, isLoading } = useGames(gameQuery);
     const [sortedData, setSortedData] = useState<Game[]>([]);
     const [isDataLoading, setIsDataLoading] = useState(false);
-    const skeletons =
-        data?.length > 0 ? new Array(data.length).keys() : [1, 2, 3, 4, 5, 6];
+    const skeletons: number[] =
+        data?.length > 0 ? [...Array(data.length).keys()] : [1, 2, 3, 4, 5, 6];
 
     useEffect(() => {
         setIsDataLoading(true);
@@ -54,23 +54,22 @@ const GameGrid = ({ gameQuery, sortOrder }: Props) => {
         setIsDataLoading(true);
     }, [gameQuery]);
 
+    if (error) return <Text>{error}</Text>;
+
     return (
-        <>
-            {error && <Text>{error}</Text>}
-            <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
-                {isDataLoading &&
-                    skeletons.map((skeleton) => (
-                        <GameCardContainer key={skeleton}>
-                            <GameCardSkeleton />
-                        </GameCardContainer>
-                    ))}
-                {sortedData.map((game) => (
-                    <GameCardContainer key={game.id}>
-                        <GameCard game={game} />
+        <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
+            {isDataLoading &&
+                skeletons.map((skeleton) => (
+                    <GameCardContainer key={skeleton}>
+                        <GameCardSkeleton />
                     </GameCardContainer>
                 ))}
-            </SimpleGrid>
-        </>
+            {sortedData.map((game) => (
+                <GameCardContainer key={game.id}>
+                    <GameCard game={game} />
+                </GameCardContainer>
+            ))}
+        </SimpleGrid>
     );
 };
 
